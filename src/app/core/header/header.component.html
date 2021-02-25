@@ -1,0 +1,13 @@
+
+
+<div class="header"
+     fxLayout="row" fxLayoutAlign=" center" >
+  <div (click)="openOrCloseLeftMenu()">
+    <i class="icon_hamburger"
+     [inlineSVG]="'assets/svg/hamburger.svg'">
+    </i>
+  </div>
+  <div fxFlexOffset="15px">
+    <p>{{ nameOfRoute }}</p>
+  </div>
+</div>

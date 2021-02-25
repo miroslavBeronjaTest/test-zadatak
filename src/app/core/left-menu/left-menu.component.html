@@ -1,0 +1,15 @@
+
+<div class="left-menu"
+     *ngIf="show">
+  <ul class="left-menu--list">
+    <li (click)="changeRoute('home')">
+      Home
+    </li>
+    <li (click)="changeRoute('new-patient')">
+      Add new patient
+    </li>
+    <li (click)="changeRoute('list-patients')">
+      List patients
+    </li>
+  </ul>
+</div>

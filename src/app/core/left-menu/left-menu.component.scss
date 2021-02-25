@@ -1,0 +1,22 @@
+.left-menu {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  width: 150px;
+  height: calc(100vh - 60px);
+  background-color:  #DCDCDC;
+}
+
+.left-menu--list {
+  list-style-type: none;
+  > li {
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  > li:hover {
+    background-color: #808080;
+  }
+}
