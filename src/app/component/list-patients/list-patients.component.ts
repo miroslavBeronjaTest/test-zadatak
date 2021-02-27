@@ -2,9 +2,10 @@ import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { map, mergeMap, toArray } from 'rxjs/operators';
+import { map, mergeMap, toArray, switchMap } from 'rxjs/operators';
 
 import * as moment from 'moment';
+import { zip, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list-patients',
@@ -12,7 +13,7 @@ import * as moment from 'moment';
   styleUrls: ['./list-patients.component.scss']
 })
 export class ListPatientsComponent implements AfterViewInit {
-  displayedColumns: string[] = ['firstName', 'lastName', 'registeredDate', 'doctor', 'phones', 'emails', 'other'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'registeredDate', 'doctorName', 'phones', 'emails', 'other'];
   dataSource: any;
 
   @ViewChild(MatPaginator, {static: true}) paginator: any;
@@ -20,32 +21,56 @@ export class ListPatientsComponent implements AfterViewInit {
   constructor(private appService: AppService) { }
 
   ngAfterViewInit() {
-    this.appService.getJSONPatients()
+
+    this.getDoctors()
       .pipe(
-        mergeMap((val: Patient[]) => val),
-        map((val: Patient) => {
-          const date: any = moment(val['registeredDate']).format('YYYY-MM-DD');;
-          val['registeredDate'] = date;
-          val['addresses'].forEach((el, index) => {
+        switchMap(doctors => this.getPatients(doctors))
+      )
+      .subscribe((patients: Patient[]) => {
+        this.dataSource = new MatTableDataSource<Patient>(patients);
+        this.dataSource.paginator = this.paginator;
+      });
+  }
+
+  getPatients(doctors: any): Observable<any> {
+    return this.appService.getJSONPatients()
+      .pipe(
+        mergeMap((patients: Patient[]) => patients),
+        map((patient: Patient) => {
+          const date: any = moment(patient['registeredDate']).format('YYYY-MM-DD');;
+          patient['registeredDate'] = date;
+          patient['doctorName'] = doctors[patient.doctor];
+          patient['addresses'].forEach((el, index) => {
             if (index === 0) {
-              val['phones'] = `${el.phone}`;
-              val['emails'] = `${el.email}`;
-              val['other'] = `${el.street},${el.city},${el.country},${el.zipcode}`;
+              patient['phones'] = `${el.phone}`;
+              patient['emails'] = `${el.email}`;
+              patient['other'] = `${el.street},${el.city},${el.country},${el.zipcode}`;
             } else {
-              val['phones'] += `,${el.phone}`;
-              val['emails'] += `,${el.email}`;
-              val['other'] += `,${el.street},${el.city},${el.country},${el.zipcode}`;
+              patient['phones'] += `,${el.phone}`;
+              patient['emails'] += `,${el.email}`;
+              patient['other'] += `,${el.street},${el.city},${el.country},${el.zipcode}`;
             }
           })
 
-          return val;
+          return patient;
         }),
         toArray()
       )
-      .subscribe((patients: any) => {
-        this.dataSource = new MatTableDataSource<Patient>(patients)
-        this.dataSource.paginator = this.paginator;
-      })
+  }
+
+  getDoctors(): Observable<any> {
+    let objectDoctors: any = {};
+    return this.appService.getJSONDoctors()
+      .pipe(
+        mergeMap((doctors: Doctor[]) => doctors),
+        map((doctor: Doctor) => {
+          const {id, firstName, lastName} = doctor;
+          objectDoctors[id] = `${firstName} ${lastName}`;
+        }),
+        toArray(),
+        map(() => objectDoctors)
+      )
+
   }
 
 }
@@ -56,6 +81,7 @@ export interface Patient {
   firstName: string,
   lastName: string,
   doctor: number,
+  doctorName: string;
   addresses: Array<Addresses>
   phones?: string;
   emails?: string;
@@ -70,4 +96,11 @@ export interface Addresses {
   city: string,
   zipcode: number,
   country: string
+}
+
+export interface Doctor {
+  id: number,
+  firstName: string,
+  lastName: string,
+  title: string
 }

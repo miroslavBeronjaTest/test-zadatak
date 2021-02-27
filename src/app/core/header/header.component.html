@@ -1,13 +1,9 @@
-
-
-<div class="header"
-     fxLayout="row" fxLayoutAlign=" center" >
-  <div (click)="openOrCloseLeftMenu()">
-    <i class="icon_hamburger"
-     [inlineSVG]="'assets/svg/hamburger.svg'">
-    </i>
-  </div>
-  <div fxFlexOffset="15px">
-    <p>{{ nameOfRoute }}</p>
-  </div>
-</div>
+<p>
+  <mat-toolbar color="primary" style="height: 60px">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon (click)="openOrCloseLeftMenu()">menu</mat-icon>
+    </button>
+    <span>{{ nameOfRoute }}</span>
+    <span class="example-spacer"></span>
+  </mat-toolbar>
+</p>

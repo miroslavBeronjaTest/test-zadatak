@@ -18,9 +18,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DialogInvalidComponent } from './dialog-invalid/dialog-invalid.component';
+import { PatientFormComponent } from './patient-form/patient-form.component';
 
 @NgModule({
-  declarations: [NewPatientComponent, DialogInvalidComponent],
+  declarations: [NewPatientComponent, DialogInvalidComponent, PatientFormComponent],
   imports: [
     CommonModule,
     FormsModule,

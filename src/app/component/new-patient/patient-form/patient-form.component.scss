@@ -1,0 +1,23 @@
+.new-patient-container {
+  padding: 10px;
+}
+
+.input__width {
+  width: 235px;
+}
+
+.name__font-weight {
+  font-weight: normal;
+}
+
+::ng-deep datepicker-value-example .mat-form-field-label{
+  color:red;
+}
+
+::ng-deep .mat-form-field-flex {
+  background-color: white !important;
+}
+
+::ng-deep .mat-dialog-container {
+  overflow-y: hidden;
+}

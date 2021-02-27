@@ -1,15 +1,17 @@
 
 <div class="left-menu"
      *ngIf="show">
-  <ul class="left-menu--list">
-    <li (click)="changeRoute('home')">
-      Home
-    </li>
-    <li (click)="changeRoute('new-patient')">
-      Add new patient
-    </li>
-    <li (click)="changeRoute('list-patients')">
-      List patients
-    </li>
-  </ul>
+  <mat-sidenav-container class="example-container">
+    <mat-list>
+      <mat-list-item class="left-menu--list" (click)="changeRoute('home')">
+        Home
+      </mat-list-item>
+      <mat-list-item class="left-menu--list" (click)="changeRoute('new-patient')">
+        Add new patient
+      </mat-list-item>
+      <mat-list-item class="left-menu--list" (click)="changeRoute('list-patients')">
+        List patients
+      </mat-list-item>
+    </mat-list>
+  </mat-sidenav-container>
 </div>
