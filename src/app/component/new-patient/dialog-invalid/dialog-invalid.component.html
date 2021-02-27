@@ -1,11 +1,11 @@
-<h1 mat-dialog-title>List od invalid</h1>
-<div mat-dialog-content>
+<h2 mat-dialog-title>List od invalid</h2>
+<mat-dialog-content class="mat-typography">
   <mat-list>
-    <mat-list-item *ngFor="let item of data">
-      {{ item.label }}
+    <mat-list-item *ngFor="let item of data; let i = index">
+      {{i}}. {{ item.label }}
     </mat-list-item>
   </mat-list>
-</div>
-<div mat-dialog-actions>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
   <button mat-button (click)="onNoClick()">Close</button>
-</div>
+</mat-dialog-actions>
